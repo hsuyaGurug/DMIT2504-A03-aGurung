@@ -60,9 +60,21 @@ class HomeViewState extends State<HomeView> {
               },
             ),
             Expanded(
-              //TODO: Replace this Text child with a ListView.builder
-              child: Text('Hi'),
-            ),
+                //TODO: Replace this Text child with a ListView.builder
+                child: ListView.builder(
+                    itemCount: stockList.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return Card(
+                        child: ListTile(
+                            title: Text('SYMBOL: ${stockList[index]['Symbol']}',
+                                style: const TextStyle(fontSize: 25)),
+                            subtitle: Text('Name: ${stockList[index]['Name']}',
+                                style: const TextStyle(fontSize: 20)),
+                            trailing: Text(
+                                'Price: ${stockList[index]['BookValue']} ${stockList[index]['Currency']}',
+                                style: const TextStyle(fontSize: 20))),
+                      );
+                    })),
           ],
         ),
       ),
@@ -110,8 +122,23 @@ class HomeViewState extends State<HomeView> {
                       //databaseService.getAllStocksFromDb and
                       //attach them to stockList,
                       //then print all stocks to the console and,
-                      //finally call setstate at the end.
-                      
+                      //finally call setstate at the end.'
+                      var data = await stockService.getCompanyInfo(symbol);
+                      if (data["Symbol"] == null) {
+                        print("Symbol:$symbol not found.");
+                      } else {
+                        companyName = data["Name"];
+                        price = data["BookValue"];
+                        await databaseService.insertStock({
+                          'Symbol': data["Symbol"],
+                          'BookValue': price,
+                          'Name': companyName,
+                          'Currency': data["Currency"],
+                        });
+                        stockList = await databaseService.getAllStocksFromDb();
+                        databaseService.printAllStocksInDbToConsole();
+                        setState(() {});
+                      }
                     } catch (e) {
                       print('HomeView inputStock catch: $e');
                     }

@@ -6,17 +6,15 @@ import '../services/network.dart';
 const apiToken = 'QTVXCOASBD3ZIC1J';
 
 class StockService {
-
   Future getCompanyInfo(String symbol) async {
-
-    var urlUsingOneString = Uri.parse('https://www.alphavantage.co/query?function=OVERVIEW&symbol=$symbol&apikey=$apiToken');
+    var urlUsingOneString = Uri.parse(
+        'https://www.alphavantage.co/query?function=OVERVIEW&symbol=$symbol&apikey=$apiToken');
 
     Uri url = Uri(
-      scheme: 'https',
-      host: 'www.alphavantage.co',
-      path: '/query',
-      query: 'function=OVERVIEW&symbol=$symbol&apikey=$apiToken'
-    );
+        scheme: 'https',
+        host: 'www.alphavantage.co',
+        path: '/query',
+        query: 'function=OVERVIEW&symbol=$symbol&apikey=$apiToken');
     print('url: $url');
     NetworkService networkService = NetworkService(url);
     var data = await networkService.getData();
@@ -26,7 +24,8 @@ class StockService {
 
   Future getQuote(String symbol) async {
     //TODO: Complete this method.
-    var url = Uri.parse('');
+    var url = Uri.parse(
+        'https://www.alphavantage.co/query?function=OVERVIEW&symbol=$symbol&apikey=$apiToken');
 
     print('url: $url');
     NetworkService networkService = NetworkService(url);
